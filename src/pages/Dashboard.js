@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { getDashboardStats, getEnrollments } from '../services/api';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 
-function Dashboard({ dark }) {
+function Dashboard({ dark, isMobile }) {
     const [stats, setStats] = useState({
         totalStudents: 0,
         totalCourses: 0,
@@ -31,30 +31,45 @@ function Dashboard({ dark }) {
         { month: 'May', enrollments: 0 },
         { month: 'Jun', enrollments: enrollments.length },
     ];
-const styles = {
-    title: { fontSize: '20px', fontWeight: '600', color: dark ? '#fff' : '#111', marginBottom: '4px' },
-    sub: { fontSize: '13px', color: dark ? '#aaa' : '#888', marginBottom: '2rem' },
-    cards: { display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px', marginBottom: '2rem' },
-    card: { background: dark ? '#2a2a2a ' : '#f0f0f0', borderRadius: '8px', padding: '1rem 1.25rem' },
-    cardLabel: { fontSize: '12px', color: dark ? '#aaa' : '#666', marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '6px' },
-    cardValue: { fontSize: '24px', fontWeight: '600', color: dark ? '#fff' : '#111' },
-    cardChange: { fontSize: '12px', color: dark ? '#aaa' : '#888', marginTop: '4px' },
-    twoCol: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '2rem' },
-    chartBox: { background: dark ? '#2a2a2a ' : '#fff', border: `1px solid ${dark ? '#333' : '#eee'}`, borderRadius: '12px', padding: '1.25rem' },
-    recentBox: { background: dark ? '#2a2a2a ' : '#fff', border: `1px solid ${dark ? '#333' : '#eee'}`, borderRadius: '12px', padding: '1.25rem' },
-    sectionTitle: { fontSize: '14px', fontWeight: '600', color: dark ? '#fff' : '#111', marginBottom: '1rem' },
-    activityItem: { display: 'flex', alignItems: 'center', gap: '10px', padding: '8px 0', borderBottom: `1px solid ${dark ? '#333' : '#f0f0f0'}` },
-    avatar: { width: '32px', height: '32px', borderRadius: '50%', background: '#e6f1fb', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '13px', fontWeight: '600', color: '#185fa5', flexShrink: 0 },
-    activityText: { fontSize: '13px', color: dark ? '#e0e0e0' : '#111' },
-    activitySub: { fontSize: '11px', color: dark ? '#aaa' : '#888' },
-    badge: { display: 'inline-block', padding: '2px 8px', borderRadius: '20px', fontSize: '11px', fontWeight: '500' },
-    tableWrap: { background: dark ? '#2a2a2a ' : '#fff', border: `1px solid ${dark ? '#333' : '#eee'}`, borderRadius: '12px', overflow: 'hidden' },
-    table: { width: '100%', borderCollapse: 'collapse', fontSize: '13px' },
-    thead: { borderBottom: `1px solid ${dark ? '#333' : '#eee'}` },
-    th: { padding: '10px 16px', textAlign: 'left', fontWeight: '500', color: dark ? '#aaa' : '#888', fontSize: '12px' },
-    tr: { borderBottom: `1px solid ${dark ? '#333' : '#f5f5f5'}` },
-    td: { padding: '12px 16px', color: dark ? '#e0e0e0' : '#111' },
-};
+    const styles = {
+        title: { fontSize: '20px', fontWeight: '600', color: dark ? '#fff' : '#111', marginBottom: '4px' },
+        sub: { fontSize: '13px', color: dark ? '#aaa' : '#888', marginBottom: '2rem' },
+        cards: {
+            display: 'grid',
+            gridTemplateColumns: isMobile ? '1fr 1fr' : 'repeat(4, 1fr)',
+            gap: '12px',
+            marginBottom: '2rem'
+        },
+        card: { background: dark ? '#2a2a2a ' : '#f0f0f0', borderRadius: '8px', padding: '1rem 1.25rem' },
+        cardLabel: { fontSize: '12px', color: dark ? '#aaa' : '#666', marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '6px' },
+        cardValue: { fontSize: '24px', fontWeight: '600', color: dark ? '#fff' : '#111' },
+        cardChange: { fontSize: '12px', color: dark ? '#aaa' : '#888', marginTop: '4px' },
+        twoCol: {
+            display: 'grid',
+            gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
+            gap: '16px',
+            marginBottom: '2rem'
+        },
+        chartBox: { background: dark ? '#2a2a2a ' : '#fff', border: `1px solid ${dark ? '#333' : '#eee'}`, borderRadius: '12px', padding: '1.25rem' },
+        recentBox: { background: dark ? '#2a2a2a ' : '#fff', border: `1px solid ${dark ? '#333' : '#eee'}`, borderRadius: '12px', padding: '1.25rem' },
+        sectionTitle: { fontSize: '14px', fontWeight: '600', color: dark ? '#fff' : '#111', marginBottom: '1rem' },
+        activityItem: { display: 'flex', alignItems: 'center', gap: '10px', padding: '8px 0', borderBottom: `1px solid ${dark ? '#333' : '#f0f0f0'}` },
+        avatar: { width: '32px', height: '32px', borderRadius: '50%', background: '#e6f1fb', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '13px', fontWeight: '600', color: '#185fa5', flexShrink: 0 },
+        activityText: { fontSize: '13px', color: dark ? '#e0e0e0' : '#111' },
+        activitySub: { fontSize: '11px', color: dark ? '#aaa' : '#888' },
+        badge: { display: 'inline-block', padding: '2px 8px', borderRadius: '20px', fontSize: '11px', fontWeight: '500' },
+        tableWrap: {
+            background: dark ? '#1e1e1e' : '#fff',
+            border: `1px solid ${dark ? '#333' : '#eee'}`,
+            borderRadius: '12px',
+            overflow: 'auto'
+        },
+        table: { width: '100%', borderCollapse: 'collapse', fontSize: '13px' },
+        thead: { borderBottom: `1px solid ${dark ? '#333' : '#eee'}` },
+        th: { padding: '10px 16px', textAlign: 'left', fontWeight: '500', color: dark ? '#aaa' : '#888', fontSize: '12px' },
+        tr: { borderBottom: `1px solid ${dark ? '#333' : '#f5f5f5'}` },
+        td: { padding: '12px 16px', color: dark ? '#e0e0e0' : '#111' },
+    };
     return (
         <div>
             <p style={styles.title}>Dashboard</p>

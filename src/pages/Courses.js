@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getCourses, createCourse, deleteCourse } from '../services/api';
 
-function Courses({dark}) {
+function Courses({dark, isMobile }) {
     const [courses, setCourses] = useState([]);
     const [form, setForm] = useState({
         title: '', description: '', durationHours: '',
@@ -43,20 +43,21 @@ function Courses({dark}) {
 const styles = {
     container: { padding: '20px' },
     title: { fontSize: '20px', fontWeight: '600', color: dark ? '#fff' : '#111', marginBottom: '4px' },
-    form: {
-        background: dark ? '#2a2a2a ' : '#ffffff',
-        border: `1px solid ${dark ? '#333' : '#eee'}`,
-        padding: '20px', borderRadius: '12px',
-        marginBottom: '30px',
-        display: 'flex', flexWrap: 'wrap', gap: '10px'
-    },
-    input: {
-        padding: '10px', borderRadius: '8px',
-        border: `1px solid ${dark ? '#444' : '#ddd'}`,
-        background: dark ? '#2a2a2a ' : '#fff',
-        color: dark ? '#fff' : '#111',
-        minWidth: '200px'
-    },
+form: {
+    background: dark ? '#1e1e1e' : '#ffffff',
+    border: `1px solid ${dark ? '#333' : '#eee'}`,
+    padding: '20px', borderRadius: '12px',
+    marginBottom: '30px',
+    display: 'flex', flexWrap: 'wrap', gap: '10px'
+},
+input: {
+    padding: '10px', borderRadius: '8px',
+    border: `1px solid ${dark ? '#444' : '#ddd'}`,
+    background: dark ? '#2a2a2a' : '#fff',
+    color: dark ? '#fff' : '#111',
+    minWidth: isMobile ? '100%' : '200px',
+    width: isMobile ? '100%' : 'auto'
+},
     button: {
         padding: '10px 20px', background: '#2196F3',
         color: 'white', border: 'none',
@@ -108,6 +109,7 @@ const styles = {
             </div>
 
             {/* Courses Table */}
+            <div style={{overflowX: 'auto'}}>
             <table style={styles.table}>
                 <thead>
                     <tr style={styles.tableHeader}>
@@ -137,6 +139,7 @@ const styles = {
                     ))}
                 </tbody>
             </table>
+            </div>
         </div>
     );
 }

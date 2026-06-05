@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getStudents, createStudent, deleteStudent } from '../services/api';
 
-function Students({ dark }) {
+function Students({ dark , isMobile }) {
     const [students, setStudents] = useState([]);
     const [form, setForm] = useState({
         name: '', email: '', phone: '',
@@ -45,20 +45,21 @@ function Students({ dark }) {
     const styles = {
     container: { padding: '20px' },
     title: { fontSize: '20px', fontWeight: '600', color: dark ? '#fff' : '#111', marginBottom: '4px' },
-    form: {
-        background: dark ? '#1e1e1e ' : '#ffffff',
-        border: `1px solid ${dark ? '#333' : '#eee'}`,
-        padding: '20px', borderRadius: '12px',
-        marginBottom: '30px',
-        display: 'flex', flexWrap: 'wrap', gap: '10px'
-    },
-    input: {
-        padding: '10px', borderRadius: '8px',
-        border: `1px solid ${dark ? '#444' : '#ddd'}`,
-        background: dark ? '#2a2a2a ' : '#fff',
-        color: dark ? '#fff' : '#111',
-        minWidth: '200px'
-    },
+form: {
+    background: dark ? '#1e1e1e' : '#ffffff',
+    border: `1px solid ${dark ? '#333' : '#eee'}`,
+    padding: '20px', borderRadius: '12px',
+    marginBottom: '30px',
+    display: 'flex', flexWrap: 'wrap', gap: '10px'
+},
+input: {
+    padding: '10px', borderRadius: '8px',
+    border: `1px solid ${dark ? '#444' : '#ddd'}`,
+    background: dark ? '#2a2a2a' : '#fff',
+    color: dark ? '#fff' : '#111',
+    minWidth: isMobile ? '100%' : '200px',
+    width: isMobile ? '100%' : 'auto'
+},
     button: {
         padding: '10px 20px', background: '#4CAF50',
         color: 'white', border: 'none',
@@ -108,6 +109,7 @@ function Students({ dark }) {
             </div>
 
             {/* Students Table */}
+            <div style={{overflowX: 'auto'}}>
             <table style={styles.table}>
                 <thead>
                     <tr style={styles.tableHeader}>
@@ -137,6 +139,7 @@ function Students({ dark }) {
                     ))}
                 </tbody>
             </table>
+            </div>
         </div>
     );
 }

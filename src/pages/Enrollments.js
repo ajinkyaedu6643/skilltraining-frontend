@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getEnrollments, createEnrollment, getStudents, getCourses } from '../services/api';
 
-function Enrollments({dark}) {
+function Enrollments({ dark, isMobile }) {
     const [enrollments, setEnrollments] = useState([]);
     const [students, setStudents] = useState([]);
     const [courses, setCourses] = useState([]);
@@ -44,40 +44,41 @@ function Enrollments({dark}) {
             })
             .catch(err => console.error(err));
     };
-const styles = {
-    container: { padding: '20px' },
-    title: { fontSize: '20px', fontWeight: '600', color: dark ? '#fff' : '#111', marginBottom: '4px' },
-    form: {
-        background: dark ? '#2a2a2a ' : '#ffffff',
-        border: `1px solid ${dark ? '#333' : '#eee'}`,
-        padding: '20px', borderRadius: '12px',
-        marginBottom: '30px',
-        display: 'flex', flexWrap: 'wrap', gap: '10px'
-    },
-    input: {
-        padding: '10px', borderRadius: '8px',
-        border: `1px solid ${dark ? '#444' : '#ddd'}`,
-        background: dark ? '#2a2a2a ' : '#fff',
-        color: dark ? '#fff' : '#111',
-        minWidth: '200px'
-    },
-    button: {
-        padding: '10px 20px', background: '#9C27B0',
-        color: 'white', border: 'none',
-        borderRadius: '8px', cursor: 'pointer'
-    },
-    table: { width: '100%', borderCollapse: 'collapse' },
-    tableHeader: {
-        background: dark ? '#2a2a2a ' : '#9C27B0',
-        color: 'white'
-    },
-    tableRow: {
-        borderBottom: `1px solid ${dark ? '#333' : '#eee'}`,
-        textAlign: 'center',
-        color: dark ? '#e0e0e0' : '#111',
-        background: dark ? '#1e1e1e' : '#fff'
-    }
-};
+    const styles = {
+        container: { padding: '20px' },
+        title: { fontSize: '20px', fontWeight: '600', color: dark ? '#fff' : '#111', marginBottom: '4px' },
+        form: {
+            background: dark ? '#1e1e1e' : '#ffffff',
+            border: `1px solid ${dark ? '#333' : '#eee'}`,
+            padding: '20px', borderRadius: '12px',
+            marginBottom: '30px',
+            display: 'flex', flexWrap: 'wrap', gap: '10px'
+        },
+        input: {
+            padding: '10px', borderRadius: '8px',
+            border: `1px solid ${dark ? '#444' : '#ddd'}`,
+            background: dark ? '#2a2a2a' : '#fff',
+            color: dark ? '#fff' : '#111',
+            minWidth: isMobile ? '100%' : '200px',
+            width: isMobile ? '100%' : 'auto'
+        },
+        button: {
+            padding: '10px 20px', background: '#9C27B0',
+            color: 'white', border: 'none',
+            borderRadius: '8px', cursor: 'pointer'
+        },
+        table: { width: '100%', borderCollapse: 'collapse' },
+        tableHeader: {
+            background: dark ? '#2a2a2a ' : '#9C27B0',
+            color: 'white'
+        },
+        tableRow: {
+            borderBottom: `1px solid ${dark ? '#333' : '#eee'}`,
+            textAlign: 'center',
+            color: dark ? '#e0e0e0' : '#111',
+            background: dark ? '#1e1e1e' : '#fff'
+        }
+    };
     return (
         <div style={styles.container}>
             <h1 style={styles.title}>Enrollments</h1>
@@ -105,7 +106,7 @@ const styles = {
                     type="number" value={form.feePaid} onChange={handleChange} />
                 <select style={styles.input} name="paymentStatus"
                     value={form.paymentStatus} onChange={handleChange}>
-                    <option value="">-- Payment Status --</option>    
+                    <option value="">-- Payment Status --</option>
                     <option value="PENDING">Pending</option>
                     <option value="PARTIAL">Partial</option>
                     <option value="PAID">Paid</option>
@@ -121,32 +122,33 @@ const styles = {
             </div>
 
             {/* Enrollments Table */}
-            <table style={styles.table}>
-                <thead>
-                    <tr style={styles.tableHeader}>
-                        <th>ID</th>
-                        <th>Student</th>
-                        <th>Course</th>
-                        <th>Date</th>
-                        <th>Fee Paid</th>
-                        <th>Payment</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {enrollments.map(e => (
-                        <tr key={e.id} style={styles.tableRow}>
-                            <td>{e.id}</td>
-                            <td>{e.student.name}</td>
-                            <td>{e.course.title}</td>
-                            <td>{e.enrollmentDate}</td>
-                            <td>₹{e.feePaid}</td>
-                            <td>{e.paymentStatus}</td>
-                            <td>{e.completionStatus}</td>
+            <div style={{ overflowX: 'auto' }}>
+                <table style={styles.table}>
+                    <thead>
+                        <tr style={styles.tableHeader}>
+                            <th>ID</th>
+                            <th>Student</th>
+                            <th>Course</th>
+                            <th>Date</th>
+                            <th>Fee Paid</th>
+                            <th>Payment</th>
+                            <th>Status</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {enrollments.map(e => (
+                            <tr key={e.id} style={styles.tableRow}>
+                                <td>{e.id}</td>
+                                <td>{e.student.name}</td>
+                                <td>{e.course.title}</td>
+                                <td>{e.enrollmentDate}</td>
+                                <td>₹{e.feePaid}</td>
+                                <td>{e.paymentStatus}</td>
+                                <td>{e.completionStatus}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table></div>
         </div>
     );
 }
